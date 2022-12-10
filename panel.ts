@@ -1,6 +1,18 @@
 import $ = require('jquery');
 import { getStreamData } from './getStreamData';
 
+async function loadLayouts() {
+    const req = await fetch('/layouts.json');
+    const { layouts } = await req.json();
+
+    for (let _i = 0; _i < layouts.length; _i++) {
+        const layout = layouts[_i];
+        $('#layouts').append(
+            `<option value="${layout.id}">${layout.name}</option>`
+        );
+    }
+}
+
 $(document).ready(async () => {
     $('#contentId').val('1000005659');
 
@@ -9,14 +21,6 @@ $(document).ready(async () => {
         const contentId: any = $('#contentId').val();
         const channelId = $('#channels').val();
 
-        // var channelId = e?.value;
-
-        console.log(contentId, channelId);
-
-        // if (channelId === '') {
-        //     fetch(`/openNewWindow/${contentId}`)
-        //     return
-        // }
         fetch(`/openNewWindow/${contentId}/${channelId}`);
     });
 
@@ -76,10 +80,44 @@ $(document).ready(async () => {
                               ' | '
                           )
                         : stream.title
-                }, Type : ${stream.type}`
+                }, Type : ${stream.type}, channelId : ${stream.channelId}`
             );
         }
 
         console.log(`Classification done.`);
     });
+
+    $(`#open_layout`).click(async () => {
+        console.log('Opening layout.');
+        console.log('Getting layout list...');
+        const req = await fetch('/layouts.json');
+        const layout_list = await req.json();
+        const {layouts} = layout_list;
+        console.log('Done.');
+
+        const layout_id = $('#layouts').val();
+
+        for (let _i = 0; _i < layouts.length; _i++) {
+            const layout: any = layouts[_i];
+            const contentId: any = $('#contentId').val();
+
+            console.log('Checking this layout...');
+
+            if (layout.id == layout_id) {
+                console.log('Good id.');
+                for (let _i = 0; _i < layout.players.length; _i++) {
+                    const player: any = layout.players[_i];
+                    console.log(player);
+
+                    console.log(`Calling /openNewWindow/${contentId}/${player.channelId}/${player.x}/${player.y}`);
+
+                    fetch(
+                        `/openNewWindow/${contentId}/${player.channelId}/${player.x}/${player.y}`
+                    );
+                }
+            }
+        }
+    });
+
+    loadLayouts();
 });
