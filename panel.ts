@@ -29,11 +29,18 @@ $(document).ready(async () => {
         const streams =
             streamData.resultObj.containers[0].metadata.additionalStreams;
 
+        console.log(
+            `${streamData.resultObj.containers[0].metadata.additionalStreams.length} additional stream found.`
+        );
+        console.log(`Starting classification...`);
+
         const categories: any[] = [];
 
         for (let _i = 0; _i < streams.length; _i++) {
             const stream = streams[_i];
+
             if (categories.includes(stream.type) === false) {
+                console.log(`New category detected : ${stream.type}`);
                 categories.push(stream.type);
                 $('#channels').append(
                     `<optgroup label="${
@@ -60,6 +67,19 @@ $(document).ready(async () => {
                         : stream.title
                 }</option>`
             );
+
+            console.log(
+                `Name : ${
+                    stream.type === 'obc'
+                        ? `${stream.reportingName}|${stream.teamName}`.replace(
+                              /[|]/g,
+                              ' | '
+                          )
+                        : stream.title
+                }, Type : ${stream.type}`
+            );
         }
+
+        console.log(`Classification done.`);
     });
 });
