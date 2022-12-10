@@ -35,6 +35,9 @@ async function initAPI() {
         }
     );
 
+    /**
+     * @deprecated
+     */
     await api.get('/openNewWindow/:contentId', (req, res) => {
         const { contentId } = req.params;
 
@@ -54,26 +57,57 @@ async function initAPI() {
         res.send('OK');
     });
 
+    await api.get('/openNewWindow/:contentId/:channelId/:x/:y', (req, res) => {
+        const { contentId, channelId, x, y } = req.params;
+
+        createWindow(
+            `http://localhost:10101/player/${contentId}/${channelId}`,
+            false,
+            parseInt(x),
+            parseInt(y)
+        );
+        console.log('Openning new player');
+        res.send('OK');
+    });
+
     await api.listen(10101, () => {
         console.log('Web server started');
     });
 }
 
-function createWindow(url: string, frame?: boolean) {
+function createWindow(url: string, frame?: boolean, x?: number, y?: number) {
     if (frame === undefined) frame = true;
 
-    // Create the browser window.
-    const mainWindow = new BrowserWindow({
-        width: 1000,
-        height: 562,
-        frame: frame,
-        webPreferences: {
-            webSecurity: false,
-            nodeIntegration: true,
-            contextIsolation: false,
-            contextBridge: true,
-        },
-    });
+    let mainWindow;
+
+    if (x === undefined || y === undefined) {
+        // Create the browser window.
+        mainWindow = new BrowserWindow({
+            width: 1000,
+            height: 562,
+            frame: frame,
+            webPreferences: {
+                webSecurity: false,
+                nodeIntegration: true,
+                contextIsolation: false,
+                contextBridge: true,
+            },
+        });
+    } else {
+        mainWindow = new BrowserWindow({
+            width: 1000,
+            height: 562,
+            x: x,
+            y: y,
+            frame: frame,
+            webPreferences: {
+                webSecurity: false,
+                nodeIntegration: true,
+                contextIsolation: false,
+                contextBridge: true,
+            },
+        });
+    }
 
     // and load the index.html of the app.
     mainWindow.loadURL(url);
