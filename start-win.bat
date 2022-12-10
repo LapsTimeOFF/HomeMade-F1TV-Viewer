@@ -1,3 +1,4 @@
 npm i
-npx tsc
+npm i typescript -g
+tsc
 npx electron ./electron.js
