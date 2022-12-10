@@ -89,7 +89,7 @@ $(document).ready(async () => {
 
     $(`#open_layouts`).click(async () => {
         const req = await fetch('/layouts.json');
-        const layouts = await req.json();
+        const {layouts} = await req.json();
 
         const layout_id = $('#layouts').val();
 
