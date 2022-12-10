@@ -3,7 +3,7 @@ import { getStreamData } from './getStreamData';
 
 async function loadLayouts() {
     const req = await fetch('/layouts.json');
-    const layouts = await req.json();
+    const { layouts } = await req.json();
 
     for (let _i = 0; _i < layouts.length; _i++) {
         const layout = layouts[_i];
@@ -16,8 +16,6 @@ async function loadLayouts() {
 
             for (let _i = 0; _i < layouts.players.length; _i++) {
                 const player = layouts.players[_i];
-                
-                
             }
         });
     }
