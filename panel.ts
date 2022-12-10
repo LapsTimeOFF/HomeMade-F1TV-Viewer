@@ -1,6 +1,28 @@
 import $ = require('jquery');
 import { getStreamData } from './getStreamData';
 
+async function loadLayouts() {
+    const req = await fetch('/layouts.json');
+    const layouts = await req.json();
+
+    for (let _i = 0; _i < layouts.length; _i++) {
+        const layout = layouts[_i];
+        $('#layouts').append(
+            `<option value="${layout.name}">${layout.name}</option>`
+        );
+        $(`option[value="${layout.name}"`).click(async () => {
+            const req = await fetch('/layouts.json');
+            const layouts = await req.json();
+
+            for (let _i = 0; _i < layouts.players.length; _i++) {
+                const player = layouts.players[_i];
+                
+                
+            }
+        });
+    }
+}
+
 $(document).ready(async () => {
     $('#contentId').val('1000005659');
 
@@ -9,14 +31,6 @@ $(document).ready(async () => {
         const contentId: any = $('#contentId').val();
         const channelId = $('#channels').val();
 
-        // var channelId = e?.value;
-
-        console.log(contentId, channelId);
-
-        // if (channelId === '') {
-        //     fetch(`/openNewWindow/${contentId}`)
-        //     return
-        // }
         fetch(`/openNewWindow/${contentId}/${channelId}`);
     });
 
@@ -82,6 +96,4 @@ $(document).ready(async () => {
 
         console.log(`Classification done.`);
     });
-
-    
 });
