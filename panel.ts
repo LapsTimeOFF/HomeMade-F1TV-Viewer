@@ -88,8 +88,12 @@ $(document).ready(async () => {
     });
 
     $(`#open_layout`).click(async () => {
+        console.log('Opening layout.');
+        console.log('Getting layout list...');
         const req = await fetch('/layouts.json');
-        const { layouts } = await req.json();
+        const layout_list = await req.json();
+        const {layouts} = layout_list;
+        console.log('Done.');
 
         const layout_id = $('#layouts').val();
 
@@ -97,9 +101,15 @@ $(document).ready(async () => {
             const layout: any = layouts[_i];
             const contentId: any = $('#contentId').val();
 
-            if (layout.id === layout_id) {
+            console.log('Checking this layout...');
+
+            if (layout.id == layout_id) {
+                console.log('Good id.');
                 for (let _i = 0; _i < layout.players.length; _i++) {
                     const player: any = layout.players[_i];
+                    console.log(player);
+
+                    console.log(`Calling /openNewWindow/${contentId}/${player.contentId}/${player.x}/${player.y}`);
 
                     fetch(
                         `/openNewWindow/${contentId}/${player.contentId}/${player.x}/${player.y}`
