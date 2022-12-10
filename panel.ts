@@ -76,10 +76,12 @@ $(document).ready(async () => {
                               ' | '
                           )
                         : stream.title
-                }, Type : ${stream.type}`
+                }, Type : ${stream.type}, channelId : ${stream.channelId}`
             );
         }
 
         console.log(`Classification done.`);
     });
+
+    
 });

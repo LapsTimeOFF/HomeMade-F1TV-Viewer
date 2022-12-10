@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "layouts": [
+        {
+            "id": 0,
+            "name": "Test layout",
+            "players": [
+                { "x": 2285, "y": -1214, "channelId": "WIF" },
+                { "x": 1284, "y": -1214, "channelId": "1009" },
+                { "x": 1284, "y": -651, "channelId": "1021" },
+                { "x": 2285, "y": -651, "channelId": "1008" }
+            ]
+        }
+    ]
+}
