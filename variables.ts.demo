@@ -1,3 +1,0 @@
-export let baseURL = 'https://f1tv.formula1.com';
-export let token: string =
-    'your_token';

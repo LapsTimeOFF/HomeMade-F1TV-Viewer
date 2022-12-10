@@ -1,5 +1,6 @@
 import path from 'path';
 import express from 'express';
+require('dotenv').config();
 
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, session, protocol } = require('electron');
@@ -20,7 +21,13 @@ async function initAPI() {
         res.sendFile(`${__dirname}/panel.html`);
     });
 
-    await api.use(express.static(path.resolve('./')));
+    await api.use(
+        express.static(
+            path.resolve(
+                process.env.PATH_STATIC === 'DEV' ? './' : 'resources/app/'
+            )
+        )
+    );
 
     await api.get(
         '/player/:contentId',
