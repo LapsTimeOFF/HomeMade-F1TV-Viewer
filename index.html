@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            overflow: hidden;
+            margin: 0;
+            -webkit-app-region: drag;
+        }
+
+        .bmpui-ui-watermark {
+            display: none;
+        }
+
+        .bmpui-ui-hugereplaybutton {
+            pointer-events: none;
+        }
+    </style>
+    <!-- Step 1) Load the stylesheet of the player UI-->
+    <link rel="stylesheet" href="/ui/bitmovinplayer-ui.css">
+    <script src="//bitmovin-a.akamaihd.net/bitmovin-player/stable/8/bitmovinplayer.js"></script>
+    <!-- Step 2) Load the bitmovinplayer-ui.js-->
+    <script src="/ui/bitmovinplayer-ui.js"></script>
+</head>
+
+<body>
+    <div class="player-wrapper">
+        <div id="player"></div>
+    </div>
+
+    <script>
+        var exports = {};
+        const {
+            token,
+            baseURL
+        } = require('/variables.js');
+        const {
+            contentId
+        } = require('/getStreamURL.js');
+    </script>
+    <script src="/index.js"></script>
+</body>
+
+</html>
