@@ -87,9 +87,9 @@ $(document).ready(async () => {
         console.log(`Classification done.`);
     });
 
-    $(`#open_layouts`).click(async () => {
+    $(`#open_layout`).click(async () => {
         const req = await fetch('/layouts.json');
-        const {layouts} = await req.json();
+        const { layouts } = await req.json();
 
         const layout_id = $('#layouts').val();
 
@@ -101,7 +101,9 @@ $(document).ready(async () => {
                 for (let _i = 0; _i < layout.players.length; _i++) {
                     const player: any = layout.players[_i];
 
-                    fetch(`/openNewWindow/${contentId}/${player.contentId}/${player.x}/${player.y}`);
+                    fetch(
+                        `/openNewWindow/${contentId}/${player.contentId}/${player.x}/${player.y}`
+                    );
                 }
             }
         }
