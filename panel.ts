@@ -96,4 +96,6 @@ $(document).ready(async () => {
 
         console.log(`Classification done.`);
     });
+
+    loadLayouts();
 });
