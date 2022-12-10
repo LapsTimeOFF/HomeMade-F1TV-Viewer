@@ -8,16 +8,8 @@ async function loadLayouts() {
     for (let _i = 0; _i < layouts.length; _i++) {
         const layout = layouts[_i];
         $('#layouts').append(
-            `<option value="${layout.name}">${layout.name}</option>`
+            `<option value="${layout.id}">${layout.name}</option>`
         );
-        $(`option[value="${layout.name}"`).click(async () => {
-            const req = await fetch('/layouts.json');
-            const layouts = await req.json();
-
-            for (let _i = 0; _i < layouts.players.length; _i++) {
-                const player = layouts.players[_i];
-            }
-        });
     }
 }
 
@@ -93,6 +85,26 @@ $(document).ready(async () => {
         }
 
         console.log(`Classification done.`);
+    });
+
+    $(`#open_layouts`).click(async () => {
+        const req = await fetch('/layouts.json');
+        const layouts = await req.json();
+
+        const layout_id = $('#layouts').val();
+
+        for (let _i = 0; _i < layouts.length; _i++) {
+            const layout: any = layouts[_i];
+            const contentId: any = $('#contentId').val();
+
+            if (layout.id === layout_id) {
+                for (let _i = 0; _i < layout.players.length; _i++) {
+                    const player: any = layout.players[_i];
+
+                    fetch(`/openNewWindow/${contentId}/${player.contentId}/${player.x}/${player.y}`);
+                }
+            }
+        }
     });
 
     loadLayouts();
