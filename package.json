@@ -1,6 +1,7 @@
 {
     "name": "homemade_f1mv",
     "version": "0.1.0",
+    "main": "electron.js",
     "private": true,
     "dependencies": {
         "aria-query": "^5.1.3",
