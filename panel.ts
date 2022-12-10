@@ -109,10 +109,10 @@ $(document).ready(async () => {
                     const player: any = layout.players[_i];
                     console.log(player);
 
-                    console.log(`Calling /openNewWindow/${contentId}/${player.contentId}/${player.x}/${player.y}`);
+                    console.log(`Calling /openNewWindow/${contentId}/${player.channelId}/${player.x}/${player.y}`);
 
                     fetch(
-                        `/openNewWindow/${contentId}/${player.contentId}/${player.x}/${player.y}`
+                        `/openNewWindow/${contentId}/${player.channelId}/${player.x}/${player.y}`
                     );
                 }
             }
