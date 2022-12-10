@@ -1,7 +1,7 @@
 import { playbackRequestPath } from './getAPIStreamURL';
 import { getStreamData } from './getStreamData';
 import { token } from './variables';
-// @ts-ignore
+
 const fetch = (...args: any) =>
     // @ts-ignore
     import('node-fetch').then(({ default: fetch }) => fetch(...args));
@@ -68,7 +68,6 @@ export async function getStreamURL(
             return {
                 url: data.resultObj.url,
                 streamType: data.resultObj.streamType,
-                // @ts-ignore
                 title: streamData.resultObj.containers[0].metadata.emfAttributes
                     .Global_Title,
                 stream: driverData.title,
@@ -78,7 +77,6 @@ export async function getStreamURL(
         return {
             url: data.resultObj.url,
             streamType: data.resultObj.streamType,
-            // @ts-ignore
             title: streamData.resultObj.containers[0].metadata.emfAttributes
                 .Global_Title,
             driver: [
