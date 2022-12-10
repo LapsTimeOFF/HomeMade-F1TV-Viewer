@@ -92,7 +92,6 @@ export async function getStreamURL(
     return {
         url: data.resultObj.url,
         streamType: data.resultObj.streamType,
-        // @ts-ignore
         title: streamData.resultObj.containers[0].metadata.emfAttributes
             .Global_Title,
     };
