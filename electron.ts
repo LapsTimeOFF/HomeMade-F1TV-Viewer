@@ -24,7 +24,7 @@ async function initAPI() {
     await api.use(
         express.static(
             path.resolve(
-                process.env.PATH_STATIC === 'DEV' ? './' : 'resources/app/'
+                process.env.PATH_STATIC === 'DEV' ? './' : './resources/app/'
             )
         )
     );

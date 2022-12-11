@@ -1,4 +1,4 @@
-import { contentId, getStreamURL } from './getStreamURL';
+import { getStreamURL } from './getStreamURL';
 import { token } from './variables';
 import { Player } from 'bitmovin-player';
 

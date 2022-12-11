@@ -1,6 +1,5 @@
 import { playbackRequestPath } from './getAPIStreamURL';
 import { getStreamData } from './getStreamData';
-import { token } from './variables';
 
 const fetch = (...args: any) =>
     // @ts-ignore
