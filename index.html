@@ -30,6 +30,12 @@
     </div>
 
     <script>
+        require('dotenv').config()
+
+        if(process.env.PATH_STATIC === "PROD") {
+            __dirname = `${__dirname}/../../../`
+        }
+
         var exports = {};
         const {
             token,

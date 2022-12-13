@@ -8,13 +8,18 @@
     <title>Panel</title>
     <script>
         var exports = {};
+        require('dotenv').config()
+
+        if (process.env.PATH_STATIC === "PROD") {
+            __dirname = `${__dirname}/../../../`
+        }
     </script>
     <!-- <script src="js/jquery.js"></script> -->
     <script src="/panel.js"></script>
 </head>
 
 <body>
-    <input type="text" placeholder="contentId" id="contentId" >
+    <input type="text" placeholder="contentId" id="contentId">
     <button id="load">Load streams</button>
 
     <br>

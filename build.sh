@@ -4,10 +4,9 @@ electron-packager . Homemade_F1MV_BETA0.1 --platform=win32 --arch=x64 --ignore=/
 rm -rf *.js
 cd Homemade_F1MV_BETA0.1-win32-x64/resources/app
 pnpm i
-cd ts
 rm -rf *.ts
 rm -rf variables.js
 rm -rf .env
 echo "PATH_STATIC=\"PROD\"" > .env
-cd ../
-cp -R ts ../../ts
+cp *.js ../../
+cd ../../../
