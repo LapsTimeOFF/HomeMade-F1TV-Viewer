@@ -1,8 +1,9 @@
 import { getStreamURL } from './getStreamURL';
+import { F1TV_getStreamURL } from './interfaces';
 import { token } from './variables';
-import { Player } from 'bitmovin-player';
+import $ from 'jquery';
 
-let pla: any;
+let player: any;
 
 const path = window.location.pathname.split('/');
 
@@ -12,7 +13,7 @@ async function loadStream(
     channelId: number | string
 ) {
     try {
-        pla.destroy();
+        player.destroy();
     } catch (error) {
         console.warn('No player detected. Or an issue happened while destroy.');
     }
@@ -24,49 +25,57 @@ async function loadStream(
 
     console.log(data);
 
-    let driver = '';
+    // let driver = '';
 
-    if (data?.driver !== undefined) {
-        for (let index = 0; index < data?.driver.length; index++) {
-            const element = data?.driver[index];
-            driver = driver + element + `${index !== 2 ? ' | ' : ''}`;
-        }
-    } else {
-        if (data?.stream) driver = data.stream;
-        else driver = 'INTERNATIONAL';
-    }
+    // if (data?.driver !== undefined) {
+    //     for (let index = 0; index < data?.driver.length; index++) {
+    //         const element = data?.driver[index];
+    //         driver = driver + element + `${index !== 2 ? ' | ' : ''}`;
+    //     }
+    // } else {
+    //     if (data?.stream) driver = data.stream;
+    //     else driver = 'INTERNATIONAL';
+    // }
 
-    let source;
+    // let source;
 
-    if (data?.streamType === 'HLS') {
-        source = {
-            title: `${data?.title} - ${driver}`,
-            hls: data?.url,
-        };
-    }
+    // if (data?.streamType === 'HLS') {
+    //     source = {
+    //         title: `${data?.title} - ${driver}`,
+    //         hls: data?.url,
+    //     };
+    // }
 
-    if (data?.streamType === 'DASH') {
-        source = {
-            title: `${data?.title} - ${driver}`,
-            dash: data?.url,
-        };
-    }
+    // if (data?.streamType === 'DASH') {
+    //     source = {
+    //         title: `${data?.title} - ${driver}`,
+    //         dash: data?.url,
+    //     };
+    // }
 
-    const config = {
-        key: '',
-        source: source,
-        location: {
-            ui: '/ui/bitmovinplayer-ui.js',
-            ui_css: '/ui/bitmovinplayer-ui.css',
-        },
-    };
-
+    const video = document.getElementById('video');
     // @ts-ignore
-    pla = new Player(document.getElementById('player'), config);
-    await pla.load(source);
-    await pla.play();
+    player = new shaka.Player(video);
+    // Attach player to the window to make it easy to access in the JS console.
+    // @ts-expect-error
+    window.player = player;
+    await player.load(data?.url);
 }
 
-(async () => {
-    await loadStream(path[2], token, path[3]);
-})();
+async function initApp() {
+    // Install built-in polyfills to patch browser incompatibilities.
+    shaka.polyfill.installAll();
+
+    // Check to see if the browser supports the basic APIs Shaka needs.
+    if (shaka.Player.isBrowserSupported()) {
+        // Everything looks good!
+        await loadStream(path[2], token, path[3]);
+    } else {
+        // This browser does not have the minimum set of APIs we need.
+        console.error('Browser not supported!');
+    }
+}
+
+$(document).ready(() => {
+    initApp();
+});
