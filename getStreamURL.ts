@@ -35,7 +35,7 @@ export async function getStreamURL(
 
     console.log(data);
 
-    if (data.resultCode !== 'OK') {
+    if (data.errorDescription !== '') {
         console.error(data.message);
         throw new Error('Failed to get a streaming url.');
     }
