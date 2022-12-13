@@ -1,5 +1,6 @@
 import { playbackRequestPath } from './getAPIStreamURL';
 import { getStreamData } from './getStreamData';
+import { F1TV_API_PlaybackResponse } from './interfaces';
 
 const fetch = (...args: any) =>
     // @ts-ignore
@@ -24,7 +25,7 @@ export async function getStreamURL(
         method: 'GET',
         headers: { ascendontoken: token },
     });
-    let data: any;
+    let data: F1TV_API_PlaybackResponse;
     try {
         data = await response.json();
     } catch (error) {
