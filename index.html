@@ -20,7 +20,9 @@
 </head>
 
 <body>
-    <video id="video" width="100%" poster="/assets/poster.png"  controls autoplay></video>
+    <div id="video-container">
+        <video id="video" width="100%" poster="/assets/poster.png" controls autoplay></video>
+    </div>
 
     <script>
         require('dotenv').config()
@@ -38,7 +40,9 @@
             contentId
         } = require('/getStreamURL.js');
     </script>
+    <!-- <script src="/node_modules/shaka-player/shaka-player.uncompiled.js"></script> -->
     <script src="/index.js"></script>
+    <link rel="stylesheet" href="/node_modules/shaka-player/dist/controls.css">
 </body>
 
 </html>

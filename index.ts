@@ -1,7 +1,8 @@
 import { getStreamURL } from './getStreamURL';
 import { token } from './variables';
 import $ from 'jquery';
-import shaka from 'shaka-player';
+// import shaka from 'shaka-player';
+import shaka from 'shaka-player/dist/shaka-player.ui.debug';
 import muxjs from 'mux.js';
 window.shaka = shaka;
 window.token = token;
@@ -29,10 +30,26 @@ async function loadStream(
     console.log(data);
 
     const video = document.getElementById('video');
+    const uiContainer = document.getElementById('video-container');
     player = new shaka.Player(video);
     // Attach player to the window to make it easy to access in the JS console.
     // @ts-expect-error
     window.player = player;
+    const ui = new shaka.ui.Overlay(player, uiContainer, video);
+    ui.configure({
+        overflowMenuButtons: [
+            'captions',
+            'quality',
+            'language',
+            'picture_in_picture',
+            'cast',
+            'playback_rate',
+            'statistics',
+        ],
+        singleClickForPlayAndPause: false,
+        doubleClickForFullscreen: false,
+        enableKeyboardPlaybackControls: false,
+    } as shaka.extern.UIConfiguration);
     await player.load(data?.url, null, 'video/mp4');
 }
 
@@ -41,7 +58,6 @@ async function initApp() {
     shaka.polyfill.installAll();
 
     shaka.dependencies.add(shaka.dependencies.Allowed.muxjs, muxjs);
-
     // Check to see if the browser supports the basic APIs Shaka needs.
     if (shaka.Player.isBrowserSupported()) {
         // Everything looks good!
