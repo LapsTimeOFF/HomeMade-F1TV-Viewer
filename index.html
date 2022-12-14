@@ -17,22 +17,17 @@
             pointer-events: none;
         }
     </style>
-    <!-- Step 1) Load the stylesheet of the player UI-->
-    <link rel="stylesheet" href="/ui/bitmovinplayer-ui.css">
-    <script src="//bitmovin-a.akamaihd.net/bitmovin-player/stable/8/bitmovinplayer.js"></script>
-    <!-- Step 2) Load the bitmovinplayer-ui.js-->
-    <script src="/ui/bitmovinplayer-ui.js"></script>
 </head>
 
 <body>
-    <div class="player-wrapper">
-        <div id="player"></div>
+    <div id="video-container">
+        <video id="video" width="100%" poster="/assets/poster.png" controls autoplay></video>
     </div>
 
     <script>
         require('dotenv').config()
 
-        if(process.env.PATH_STATIC === "PROD") {
+        if (process.env.PATH_STATIC === "PROD") {
             __dirname = `${__dirname}/../../../`
         }
 
@@ -45,7 +40,9 @@
             contentId
         } = require('/getStreamURL.js');
     </script>
+    <!-- <script src="/node_modules/shaka-player/shaka-player.uncompiled.js"></script> -->
     <script src="/index.js"></script>
+    <link rel="stylesheet" href="/node_modules/shaka-player/dist/controls.css">
 </body>
 
 </html>
