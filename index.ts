@@ -2,6 +2,7 @@ import { getStreamURL } from './getStreamURL';
 import { token } from './variables';
 import $ from 'jquery';
 import shaka from 'shaka-player';
+import muxjs from 'mux.js';
 window.shaka = shaka;
 window.token = token;
 
@@ -27,45 +28,19 @@ async function loadStream(
 
     console.log(data);
 
-    // let driver = '';
-
-    // if (data?.driver !== undefined) {
-    //     for (let index = 0; index < data?.driver.length; index++) {
-    //         const element = data?.driver[index];
-    //         driver = driver + element + `${index !== 2 ? ' | ' : ''}`;
-    //     }
-    // } else {
-    //     if (data?.stream) driver = data.stream;
-    //     else driver = 'INTERNATIONAL';
-    // }
-
-    // let source;
-
-    // if (data?.streamType === 'HLS') {
-    //     source = {
-    //         title: `${data?.title} - ${driver}`,
-    //         hls: data?.url,
-    //     };
-    // }
-
-    // if (data?.streamType === 'DASH') {
-    //     source = {
-    //         title: `${data?.title} - ${driver}`,
-    //         dash: data?.url,
-    //     };
-    // }
-
     const video = document.getElementById('video');
     player = new shaka.Player(video);
     // Attach player to the window to make it easy to access in the JS console.
     // @ts-expect-error
     window.player = player;
-    await player.load(data?.url);
+    await player.load(data?.url, null, 'video/mp4');
 }
 
 async function initApp() {
     // Install built-in polyfills to patch browser incompatibilities.
     shaka.polyfill.installAll();
+
+    shaka.dependencies.add(shaka.dependencies.Allowed.muxjs, muxjs);
 
     // Check to see if the browser supports the basic APIs Shaka needs.
     if (shaka.Player.isBrowserSupported()) {
@@ -78,8 +53,5 @@ async function initApp() {
 }
 
 $(document).ready(async () => {
-    await $('body').append(
-        '<video id="video" width="100%" poster="/assets/poster.png" controls autoplay></video>'
-    );
     await initApp();
 });
