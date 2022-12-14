@@ -14,6 +14,7 @@ specifiers:
   express: ^4.18.2
   jquery: ^3.6.1
   node-fetch: ^2.6.7
+  shaka-player: ^4.3.1
   typescript: ^4.9.4
 
 dependencies:
@@ -23,6 +24,7 @@ dependencies:
   express: 4.18.2
   jquery: 3.6.1
   node-fetch: 2.6.7
+  shaka-player: 4.3.1
   typescript: 4.9.4
 
 devDependencies:
@@ -853,6 +855,10 @@ packages:
       extract-zip: 2.0.1
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /eme-encryption-scheme-polyfill/2.1.1:
+    resolution: {integrity: sha512-njD17wcUrbqCj0ArpLu5zWXtaiupHb/2fIUQGdInf83GlI+Q6mmqaPGLdrke4savKAu15J/z1Tg/ivDgl14g0g==}
     dev: false
 
   /encodeurl/1.0.2:
@@ -2264,6 +2270,13 @@ packages:
 
   /setprototypeof/1.2.0:
     resolution: {integrity: sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==}
+    dev: false
+
+  /shaka-player/4.3.1:
+    resolution: {integrity: sha512-TeZh80k1o2zba/bC8H+ypmosTA9dgfNK5UZM8taK2j1vQgICrqiOEK0HuzFoZ3hOTLvGo6IhIIUSXfaGelO66g==}
+    engines: {node: '>=14'}
+    dependencies:
+      eme-encryption-scheme-polyfill: 2.1.1
     dev: false
 
   /shebang-command/2.0.0:

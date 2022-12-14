@@ -1,7 +1,9 @@
 import { getStreamURL } from './getStreamURL';
-import { F1TV_getStreamURL } from './interfaces';
 import { token } from './variables';
 import $ from 'jquery';
+import shaka from 'shaka-player';
+window.shaka = shaka;
+window.token = token;
 
 let player: any;
 
@@ -54,7 +56,6 @@ async function loadStream(
     // }
 
     const video = document.getElementById('video');
-    // @ts-ignore
     player = new shaka.Player(video);
     // Attach player to the window to make it easy to access in the JS console.
     // @ts-expect-error
@@ -76,6 +77,9 @@ async function initApp() {
     }
 }
 
-$(document).ready(() => {
-    initApp();
+$(document).ready(async () => {
+    await $('body').append(
+        '<video id="video" width="100%" poster="/assets/poster.png" controls autoplay></video>'
+    );
+    await initApp();
 });
