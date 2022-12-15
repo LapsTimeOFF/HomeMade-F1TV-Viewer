@@ -39,7 +39,10 @@ for (let _i = 0; _i < layouts.length; _i++) {
         this_player.x = player.bounds.x;
         this_player.y = player.bounds.y;
         this_player.width = player.bounds.width;
-        this_player.channelId = player.streamData.channelId.toString();
+        this_player.channelId =
+            player.streamData.title === 'INTERNATIONAL'
+                ? 'WIF'
+                : player.streamData.channelId.toString();
 
         this_layout.players.push(this_player);
     }
