@@ -77,21 +77,50 @@ async function initAPI() {
         res.send('OK');
     });
 
+    await api.get(
+        '/openNewWindow/:contentId/:channelId/:x/:y/:width',
+        (req, res) => {
+            const { contentId, channelId, x, y, width } = req.params;
+
+            const height = parseInt(width) / (16 / 9);
+
+            createWindow(
+                `http://localhost:10101/player/${contentId}/${channelId}`,
+                false,
+                parseInt(x),
+                parseInt(y),
+                parseInt(width),
+                height
+            );
+            console.log('Openning new player');
+            res.send('OK');
+        }
+    );
+
     await api.listen(10101, () => {
         console.log('Web server started');
     });
 }
 
-function createWindow(url: string, frame?: boolean, x?: number, y?: number) {
+function createWindow(
+    url: string,
+    frame?: boolean,
+    x?: number,
+    y?: number,
+    width?: number,
+    height?: number
+) {
     if (frame === undefined) frame = true;
+
+    console.log(url, frame, x, y, width, Math.round(height === undefined ? 0 : height));
 
     let mainWindow;
 
     if (x === undefined || y === undefined) {
         // Create the browser window.
         mainWindow = new BrowserWindow({
-            width: 1000,
-            height: 562,
+            width: width === undefined ? 1000 : width,
+            height: height === undefined ? 562 : Math.round(height === undefined ? 0 : height),
             frame: frame,
             webPreferences: {
                 webSecurity: false,
@@ -102,8 +131,8 @@ function createWindow(url: string, frame?: boolean, x?: number, y?: number) {
         });
     } else {
         mainWindow = new BrowserWindow({
-            width: 1000,
-            height: 562,
+            width: width === undefined ? 1000 : width,
+            height: height === undefined ? 562 : Math.round(height === undefined ? 0 : height),
             x: x,
             y: y,
             frame: frame,

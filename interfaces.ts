@@ -24,3 +24,21 @@ export interface F1TV_getStreamURL {
     stream?: string;
     driver?: [string, number, string];
 }
+
+export interface Layout_File {
+    version: number;
+    layouts: [Layout];
+}
+
+export interface Layout {
+    id: number;
+    name: string;
+    players: [Layout_Player];
+}
+
+export interface Layout_Player {
+    x: number;
+    y: number;
+    channelId: string;
+    width: number;
+}

@@ -1,5 +1,6 @@
 import $ = require('jquery');
 import { getStreamData } from './getStreamData';
+import { Layout, Layout_Player } from './interfaces';
 
 async function loadLayouts() {
     const req = await fetch('/layouts.json');
@@ -98,7 +99,7 @@ $(document).ready(async () => {
         const layout_id = $('#layouts').val();
 
         for (let _i = 0; _i < layouts.length; _i++) {
-            const layout: any = layouts[_i];
+            const layout: Layout = layouts[_i];
             const contentId: any = $('#contentId').val();
 
             console.log('Checking this layout...');
@@ -106,13 +107,13 @@ $(document).ready(async () => {
             if (layout.id == layout_id) {
                 console.log('Good id.');
                 for (let _i = 0; _i < layout.players.length; _i++) {
-                    const player: any = layout.players[_i];
+                    const player: Layout_Player = layout.players[_i];
                     console.log(player);
 
-                    console.log(`Calling /openNewWindow/${contentId}/${player.channelId}/${player.x}/${player.y}`);
+                    console.log(`Calling /openNewWindow/${contentId}/${player.channelId}/${player.x}/${player.y}/${player.width}`);
 
                     fetch(
-                        `/openNewWindow/${contentId}/${player.channelId}/${player.x}/${player.y}`
+                        `/openNewWindow/${contentId}/${player.channelId}/${player.x}/${player.y}/${player.width}`
                     );
                 }
             }
