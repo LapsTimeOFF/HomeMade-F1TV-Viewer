@@ -8,7 +8,6 @@ const { layouts } = F1MV_File;
 
 let final_layout: Layout_File = {
     version: 1,
-    // @ts-ignore
     layouts: [],
 };
 
@@ -20,7 +19,6 @@ for (let _i = 0; _i < layouts.length; _i++) {
     let this_layout: Layout = {
         id: 0,
         name: '',
-        // @ts-ignore
         players: [],
     };
 

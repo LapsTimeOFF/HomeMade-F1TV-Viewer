@@ -50,6 +50,12 @@ async function loadStream(
         doubleClickForFullscreen: false,
         enableKeyboardPlaybackControls: false,
     } as shaka.extern.UIConfiguration);
+    ui.getControls()
+        ?.getLocalization()
+        ?.insert('en', new Map([['teamradio', 'Team Radio']]));
+    ui.getControls()
+        ?.getLocalization()
+        ?.insert('en', new Map([['fx', 'FX']]));
     await player.load(data?.url, null, 'video/mp4');
 }
 
