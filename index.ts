@@ -4,8 +4,6 @@ import $ from 'jquery';
 // import shaka from 'shaka-player';
 import shaka from 'shaka-player/dist/shaka-player.ui.debug';
 import muxjs from 'mux.js';
-window.shaka = shaka;
-window.token = token;
 
 let player: any;
 
