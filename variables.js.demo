@@ -1,5 +1,0 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.token = exports.baseURL = void 0;
-exports.baseURL = 'https://f1tv.formula1.com';
-exports.token = 'your_token';
