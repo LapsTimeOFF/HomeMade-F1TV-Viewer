@@ -107,9 +107,10 @@ const Panel = () => {
                 const layout: Layout = layouts[_i];
                 const contentId: any = $('#contentId').val();
 
-                console.log('Checking this layout...');
+                console.log('Checking this layout...', layout.id, layout_id);
 
-                if (layout.id === layout_id) {
+                // eslint-disable-next-line eqeqeq
+                if (layout.id == layout_id) {
                     console.log('Good id.');
                     for (let _i = 0; _i < layout.players.length; _i++) {
                         const player: Layout_Player = layout.players[_i];
