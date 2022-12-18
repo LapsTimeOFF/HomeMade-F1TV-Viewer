@@ -1,7 +1,7 @@
-import { baseURL } from './variables';
+import variables from './variables.json';
 
 export async function playbackRequestPath(format: string, contentId: number | string, channelId?: number | string) {
-    const url = new URL(`${baseURL}/2.0/R/FRA/${format}/ALL/CONTENT/PLAY`);
+    const url = new URL(`${variables.baseURL}/2.0/R/FRA/${format}/ALL/CONTENT/PLAY`);
     const searchParams = new URLSearchParams();
     searchParams.set('contentId', contentId.toString(10));
     if (channelId) searchParams.set('channelId', channelId.toString(10));

@@ -1,6 +1,6 @@
 import React from 'react';
 import { getStreamURL } from './getStreamURL';
-import { token } from './variables';
+import variables from './variables.json';
 import $ from 'jquery';
 // @ts-ignore
 import shaka from 'shaka-player/dist/shaka-player.ui.debug';
@@ -71,7 +71,7 @@ const Player = () => {
         // Check to see if the browser supports the basic APIs Shaka needs.
         if (shaka.Player.isBrowserSupported()) {
             // Everything looks good!
-            await loadStream(path[2], token, path[3]);
+            await loadStream(path[2], variables.token, path[3]);
         } else {
             // This browser does not have the minimum set of APIs we need.
             console.error('Browser not supported!');

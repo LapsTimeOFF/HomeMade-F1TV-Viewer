@@ -1,5 +1,6 @@
 {
     "name": "homemade_f1mv_react",
+    "main": "electron.js",
     "version": "0.1.0",
     "private": true,
     "dependencies": {
@@ -24,9 +25,10 @@
     },
     "scripts": {
         "start:web": "react-scripts start",
-        "start:desktop": "pnpm build:web && pnpm build:desktop && cp src/layouts.json build/layouts.json && mkdir build/assets && cp assets/* build/assets/ && electron ./build/electron.js && rm -rf build/",
+        "start:desktop": "pnpm build:web && pnpm build:desktop && cp src/layouts.json build/layouts.json && cp src/variables.json build/variables.json && mkdir build/assets && cp assets/* build/assets/ && electron ./build/electron.js && rm -rf build/",
         "build:web": "PUBLIC_URL=./ react-scripts build",
         "build:desktop": "tsc -p electron/tsconfig.json",
+        "build:prod": "pnpm build:web && pnpm build:desktop && cp src/layouts.json build/layouts.json && mkdir build/assets && cp assets/* build/assets/ && cp package.json ./build/package.json && electron-packager . Homemade_F1MV --platform=win32 --arch=x64 --ignore=/node_modules",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
     },
