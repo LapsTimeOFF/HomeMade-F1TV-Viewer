@@ -198,3 +198,5 @@ dist
 variables.ts
 
 Homemade*
+
+build/
