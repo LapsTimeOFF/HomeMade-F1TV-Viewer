@@ -78,6 +78,12 @@ const Player = () => {
         }
     }
 
+    async function seek(position: number) {
+        const v = document.getElementById('video');
+        // @ts-ignore
+        v.currentTime = position;
+    }
+
     $(document).ready(async () => {
         await initApp();
     });

@@ -2,7 +2,7 @@ import path from 'path';
 import express, { Request, Response } from 'express';
 
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, session, protocol } = require('electron');
+const { app, BrowserWindow, session, protocol, ipcMain } = require('electron');
 
 const api = express();
 
@@ -174,6 +174,12 @@ function createWindow(
             },
         });
     }
+
+    ipcMain.on('set-title', (event: { sender: any; }, title: any) => {
+        const webContents = event.sender;
+        const win = BrowserWindow.fromWebContents(webContents);
+        win.setTitle(title);
+    });
 
     // and load the index.html of the app.
     mainWindow.loadURL(url);
