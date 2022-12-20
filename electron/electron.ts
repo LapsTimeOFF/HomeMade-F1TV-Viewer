@@ -22,20 +22,6 @@ async function initAPI() {
 
     await api.use(express.static(path.resolve(__dirname)));
 
-    await api.get('/panel/', (_: Request, res: Response) => {
-        res.sendFile(`${__dirname}/index.html`);
-    });
-
-    await api.get('/player/:contentId', (_: Request, res: Response) => {
-        res.sendFile(`${__dirname}/index.html`);
-    });
-    await api.get(
-        '/player/:contentId/:channelId',
-        (_: Request, res: Response) => {
-            res.sendFile(`${__dirname}/index.html`);
-        }
-    );
-
     await api.get('/player/:contentId/static*', (req, res) => {
         const path = req.path.split('/');
 
@@ -58,7 +44,12 @@ async function initAPI() {
         (req: Request, res: Response) => {
             const { contentId } = req.params;
 
-            createWindow(`http://localhost:10101/player/${contentId}`, false);
+            createWindow(
+                `http://localhost:${
+                    process.env.RUN_ENV === 'dev' ? 3002 : 3001
+                }/player/${contentId}`,
+                false
+            );
             console.log('Openning new player');
             res.send('OK');
         }
@@ -70,7 +61,9 @@ async function initAPI() {
             const { contentId, channelId } = req.params;
 
             createWindow(
-                `http://localhost:10101/player/${contentId}/${channelId}`,
+                `http://localhost:${
+                    process.env.RUN_ENV === 'dev' ? 3002 : 3001
+                }/player/${contentId}/${channelId}`,
                 false
             );
             console.log('Openning new player');
@@ -84,7 +77,9 @@ async function initAPI() {
             const { contentId, channelId, x, y } = req.params;
 
             createWindow(
-                `http://localhost:10101/player/${contentId}/${channelId}`,
+                `http://localhost:${
+                    process.env.RUN_ENV === 'dev' ? 3002 : 3001
+                }/player/${contentId}/${channelId}`,
                 false,
                 parseInt(x),
                 parseInt(y)
@@ -102,7 +97,9 @@ async function initAPI() {
             const height = parseInt(width) / (16 / 9);
 
             createWindow(
-                `http://localhost:10101/player/${contentId}/${channelId}`,
+                `http://localhost:${
+                    process.env.RUN_ENV === 'dev' ? 3002 : 3001
+                }/player/${contentId}/${channelId}`,
                 false,
                 parseInt(x),
                 parseInt(y),
@@ -114,7 +111,11 @@ async function initAPI() {
         }
     );
 
-    await api.listen(10101, () => {
+    await api.get('*', (_: Request, res: Response) => {
+        res.sendFile(`${__dirname}/index.html`);
+    });
+
+    await api.listen(3001, () => {
         console.log('Web server started');
     });
 }
@@ -155,6 +156,7 @@ function createWindow(
                 contextIsolation: false,
                 contextBridge: true,
             },
+            preload: `${__dirname}/preload.js`,
         });
     } else {
         mainWindow = new BrowserWindow({
@@ -172,10 +174,11 @@ function createWindow(
                 contextIsolation: false,
                 contextBridge: true,
             },
+            preload: `${__dirname}/preload.js`,
         });
     }
 
-    ipcMain.on('set-title', (event: { sender: any; }, title: any) => {
+    ipcMain.on('set-title', (event: { sender: any }, title: any) => {
         const webContents = event.sender;
         const win = BrowserWindow.fromWebContents(webContents);
         win.setTitle(title);
@@ -187,7 +190,7 @@ function createWindow(
     // Open the DevTools.
     // mainWindow.webContents.openDevTools();
 
-    mainWindow.setAspectRatio(16 / 9);
+    // mainWindow.setAspectRatio(16 / 9);
 }
 
 // This method will be called when Electron has finished
@@ -222,6 +225,35 @@ app.whenReady().then(async () => {
             if (details.url.match(/^https:\/\/licensing\.bitmovin\.com/)) {
                 console.log('Bitmovin Call - Blocking request');
                 return callback({ cancel: true });
+            }
+
+            if (
+                details.url.match(/^https:\/\/(dev-)?livetiming.formula1.com\//)
+            ) {
+                console.log('F1 Live Timing Call - Editing headers...');
+                const { referer, Referer, ...headers } = details.requestHeaders;
+
+                const secFetchSite = details.url.startsWith(
+                    'https://f1tv.formula1.com'
+                )
+                    ? 'same-origin'
+                    : 'same-site';
+
+                return callback({
+                    requestHeaders: {
+                        ...headers,
+                        // 'user-agent':
+                        //     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
+                        referer: 'https://www.formula1.com/',
+                        Origin: 'https://www.formula1.com',
+                        'Sec-Fetch-Site': secFetchSite,
+                        // Cookie: [authCookie, Cookie, cookie]
+                        //     .filter(Boolean)
+                        //     .join('; '),
+                        Cookie: 'GCLB=CLLmiLaG7obCmwE',
+                        'sec-ch-ua': '"Not;A=Brand";v="99", "Chromium";v="106"',
+                    },
+                });
             }
 
             console.log('F1 Call - Editing headers...');
@@ -276,22 +308,28 @@ app.whenReady().then(async () => {
     // );
 
     await initAPI();
-    await createWindow('http://localhost:10101/panel');
+    await createWindow(
+        `http://localhost:${process.env.RUN_ENV === 'dev' ? 3002 : 3001}/panel`
+    );
 
     app.on('activate', function () {
         // On macOS it's common to re-create a window in the app when the
         // dock icon is clicked and there are no other windows open.
         if (BrowserWindow.getAllWindows().length === 0)
-            createWindow('http://localhost:10101/');
+            createWindow(
+                `http://localhost:${
+                    process.env.RUN_ENV === 'dev' ? 3002 : 3001
+                }/`
+            );
     });
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
-app.on('window-all-closed', function () {
-    if (process.platform !== 'darwin') app.quit();
-});
+// app.on('window-all-closed', function () {
+//     if (process.platform !== 'darwin') app.quit();
+// });
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.

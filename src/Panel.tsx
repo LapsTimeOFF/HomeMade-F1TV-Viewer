@@ -146,6 +146,8 @@ const Panel = () => {
 
             <select name="Layouts" id="layouts"></select>
             <button id="open_layout">Open this layout</button>
+
+            <a href="/LiveTiming">Live Timing</a>
         </div>
     );
 };
