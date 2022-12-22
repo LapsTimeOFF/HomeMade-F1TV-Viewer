@@ -11,10 +11,12 @@ function decompressTimeSeries(data: string) {
 
 const LiveTiming = () => {
     const [allData, setAllData] = useState({});
-    const [URL, setURL] = useState('https://livetiming.formula1.com/signalr');
+    let URL = 'https://livetiming.formula1.com/signalr';
 
     // @ts-ignore
-    window.setCustomLT_URL = setURL;
+    window.setCustomLT_URL = (newURL) => {
+        URL = newURL;
+    };
 
     useEffect(() => {
         let currentData = {};
