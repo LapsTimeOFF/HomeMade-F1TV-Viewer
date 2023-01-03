@@ -11,10 +11,17 @@ function decompressTimeSeries(data: string) {
 
 const LiveTiming = () => {
     const [allData, setAllData] = useState({});
-    let [URL, setURL] = useState('https://livetiming.formula1.com/signalr');
+    const [URL, setURL] = useState('https://livetiming.formula1.com/signalr');
 
     // @ts-ignore
-    window.setCustomLT_URL = setURL;
+    window.setCustomLT_URL = (url) => {
+        setURL(url);
+    };
+
+    // @ts-ignore
+    window.currentData = async () => {
+        return allData;
+    };
 
     useEffect(() => {
         let currentData = {};
@@ -45,6 +52,8 @@ const LiveTiming = () => {
 
             setAllData(data2);
             console.log(topic, data);
+            // @ts-ignore
+            window.data = allData;
 
             // console.log(allData);
         });
